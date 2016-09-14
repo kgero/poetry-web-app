@@ -1,0 +1,16 @@
+<h3>This is <%= @foo %></h3>
+
+<form action="/submit" method="POST">
+	<input type="text" name="query" value="Enter Poet Name" />
+	<input type="submit" value="Submit" />
+</form>
+
+<ul>
+<% @poems.each do |poem| %>
+	<li>
+		<a href="poem/<%= poem[:id] %>"> <%= poem[:title] %></a> by <%=poem[:poet] %>
+	</li>
+<% end %>
+</ul>
+
+<p><%= @helper %></p>

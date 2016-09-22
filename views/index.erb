@@ -1,6 +1,8 @@
 
 <h1 class="title">Poetry Recommendation Engine</h1>
 
+<h2 class="subtitle">Search for a poem you like and click on the title to see similar poems. 
+
 <br />
 
 <form action="/submit" method="POST">
@@ -12,15 +14,17 @@
 	</p>
 </div>
 </form>
-
 <br />
 
+<br />
+<br />
+<h2 class="subtitle"><%= @foo %></h2>
 <ul>
 <% @poems.each do |poem| %>
 	<li>
-		<a href="poem/<%= poem[:id] %>"> <%= poem[:title] %></a> by <%=poem[:poet] %>
+		<a href="poem/<%= poem[:poem_num] %>"> <%= poem[:title] %></a> by <%=poem[:poet] %>
 	</li>
 <% end %>
 </ul>
 
-<p><%= @helper %></p>
+

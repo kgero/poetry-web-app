@@ -3,3 +3,15 @@
 
 
 <h2 class="subtitle"><%= @poem[:poet] %></h2>
+
+<p>Below are the top ten most similar poems, including their distance to the selected poem.</p>
+<p><a href="/">Click here</a> to search for another poem.</p>
+<br />
+<ul>
+<% @relations.each do |entry| %>
+	<li>
+		<%= @poems.where(:poem_num => entry[:poem1]).or(:poem_num => entry[:poem2]).exclude(:poem_num => @poem[:poem_num]).first[:title]  %></a>
+		by <%= @poems.where(:poem_num => entry[:poem1]).or(:poem_num => entry[:poem2]).exclude(:poem_num => @poem[:poem_num]).first[:poet]  %>, <%= entry[:distance] %>, [<a href="<%= @poems.where(:poem_num => entry[:poem1]).or(:poem_num => entry[:poem2]).exclude(:poem_num => @poem[:poem_num]).first[:url] %>">read me</a>]
+	</li>
+<% end %>
+</ul>

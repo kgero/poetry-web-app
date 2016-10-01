@@ -10,8 +10,8 @@
 <ul>
 <% @relations.each do |entry| %>
 	<li>
-		<%= @poems.where(:poem_num => entry[:poem1]).or(:poem_num => entry[:poem2]).exclude(:poem_num => @poem[:poem_num]).first[:title]  %></a>
-		by <%= @poems.where(:poem_num => entry[:poem1]).or(:poem_num => entry[:poem2]).exclude(:poem_num => @poem[:poem_num]).first[:poet]  %>, <%= entry[:distance] %>, [<a href="<%= @poems.where(:poem_num => entry[:poem1]).or(:poem_num => entry[:poem2]).exclude(:poem_num => @poem[:poem_num]).first[:url] %>">read me</a>]
+		<%= @poems.where(:id => entry[:poem1]).or(:id => entry[:poem2]).exclude(:id => @poem[:id]).first[:title]  %></a>
+		by <%= @poems.where(:id => entry[:poem1]).or(:id => entry[:poem2]).exclude(:id => @poem[:id]).first[:poet]  %>, <%= entry[:distance] %>, [<a href="<%= @poems.where(:id => entry[:poem1]).or(:id => entry[:poem2]).exclude(:id => @poem[:id]).first[:url] %>">read me</a>]
 	</li>
 <% end %>
 </ul>

@@ -22,7 +22,7 @@
 <ul>
 <% @poems.each do |poem| %>
 	<li>
-		<a href="poem/<%= poem[:poem_num] %>"> <%= poem[:title] %></a> by <%=poem[:poet] %>
+		<a href="poem/<%= poem[:id] %>"><%= poem[:title] %></a> by <%=poem[:poet] %>
 	</li>
 <% end %>
 </ul>

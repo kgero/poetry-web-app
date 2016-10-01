@@ -18,18 +18,25 @@ get '/howitworks' do
 end
 
 get '/poem/:id' do
-	@poem = poems.where(:id => params['id']).first
 	@poems = poems
+	@poem = poems.where(:id => params['id']).first
+
+	entry = poem_distances.where(:poem1=>params['id']).or(:poem2=>params['id']).order(:distance).first
+	@rec_poem = poems.where(:id => entry[:poem1]).or(:id => entry[:poem2]).exclude(:id => @poem[:id]).first
+
+	@poem_content = @poem[:poem].gsub(/\n/, '<br>')
+	@rec_content = @rec_poem[:poem].gsub(/\n/, '<br>')
+
 	@relations = poem_distances.where(:poem1=>params['id']).or(:poem2=>params['id']).order(:distance).limit(10)
 	erb :poem
 end
 
 post '/submit' do
 	query = params[:query]
-	@poems = poems.where(:poet => query)
-	@foo = "results..."
+	@poems = poems.where(:poet => query).or(:title => query)
+	@foo = "Results:"
 	if @poems.count == 0
-		@foo = "None found. Try Robert Frost."
+		@foo = "None found. Only exact matches are supported at this time. Try Charles Simic."
 	end
 	erb :index
 end

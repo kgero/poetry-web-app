@@ -1,8 +1,46 @@
 
-<h1 class="title"><%= @poem[:title] %></h1>
 
+<section class="hero is-primary">
+  <div class="hero-body">
+    <div class="container">
+      <h1 class="title">
+        Your poem and top recommended poem
+      </h1>
+    </div>
+  </div>
+</section>
 
-<h2 class="subtitle"><%= @poem[:poet] %></h2>
+<section class="section">
+	<div class="container">
+
+<div class="columns">
+	<div class="column">
+		<h1 class="title"><%= @poem[:title] %></h1>
+		<h2 class="subtitle"><%= @poem[:poet] %></h2>
+		<p><%= @poem_content %></p>
+	</div>
+	<div class="column">
+		<h1 class="title"><%= @rec_poem[:title] %></h1>
+		<h2 class="subtitle"><%= @rec_poem[:poet] %></h2>
+		<p><%= @rec_content %></p>
+	</div>
+</div>
+
+	</div>
+</section>
+
+<section class="hero is-primary">
+  <div class="hero-body">
+    <div class="container">
+      <h1 class="title">
+        Top ten recommended poems
+      </h1>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+	<div class="container">
 
 <p>Below are the top ten most similar poems, including their distance to the selected poem.</p>
 <p><a href="/">Click here</a> to search for another poem.</p>
@@ -10,8 +48,12 @@
 <ul>
 <% @relations.each do |entry| %>
 	<li>
-		<%= @poems.where(:id => entry[:poem1]).or(:id => entry[:poem2]).exclude(:id => @poem[:id]).first[:title]  %></a>
+		<b><%= @poems.where(:id => entry[:poem1]).or(:id => entry[:poem2]).exclude(:id => @poem[:id]).first[:title]  %></b>
 		by <%= @poems.where(:id => entry[:poem1]).or(:id => entry[:poem2]).exclude(:id => @poem[:id]).first[:poet]  %>, <%= entry[:distance] %>, [<a href="<%= @poems.where(:id => entry[:poem1]).or(:id => entry[:poem2]).exclude(:id => @poem[:id]).first[:url] %>">read me</a>]
 	</li>
 <% end %>
 </ul>
+
+
+	</div>
+</section>

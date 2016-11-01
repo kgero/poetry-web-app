@@ -31,3 +31,6 @@
 Gemfile.lock
 .ruby-version
 .ruby-gemset
+
+# sqlite databases
+*.db

@@ -1,9 +1,10 @@
 require 'sinatra'
 require 'sequel'
-# require 'pg'
+require 'pg'
 require 'erb'
 
-DB = Sequel.connect('sqlite://poemdb2.db')
+DB = Sequel.connect(ENV['DATABASE_URL'] || "postgres://qvigtqbjcjujkq:2aTeOgnlW1NuhT3SGAEcPpNzh6@ec2-54-243-30-73.compute-1.amazonaws.com:5432/d14pjbfuk22qfv")
+# DB = Sequel.connect('sqlite://poemdb2.db')
 poems = DB[:poetry]
 poem_distances = DB[:poem_distances]
 

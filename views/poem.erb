@@ -4,7 +4,7 @@
   <div class="hero-body">
     <div class="container">
       <h1 class="title">
-        Your poem and top recommended poem
+        Your selected poem and recommended poem
       </h1>
     </div>
   </div>
@@ -33,7 +33,7 @@
   <div class="hero-body">
     <div class="container">
       <h1 class="title">
-        Top ten recommended poems
+        Why was this poem recommended?
       </h1>
     </div>
   </div>
@@ -42,17 +42,22 @@
 <section class="section">
 	<div class="container">
 
-<p>Below are the top ten most similar poems, including their distance to the selected poem.</p>
-<p><a href="/">Click here</a> to search for another poem.</p>
-<br />
-<ul>
-<% @relations.each do |entry| %>
-	<li>
-		<b><%= @poems.where(:id => entry[:poem1]).or(:id => entry[:poem2]).exclude(:id => @poem[:id]).first[:title]  %></b>
-		by <%= @poems.where(:id => entry[:poem1]).or(:id => entry[:poem2]).exclude(:id => @poem[:id]).first[:poet]  %>, <%= entry[:distance] %>, [<a href="<%= @poems.where(:id => entry[:poem1]).or(:id => entry[:poem2]).exclude(:id => @poem[:id]).first[:url] %>">read me</a>]
-	</li>
-<% end %>
-</ul>
+	<div class="columns">
+	<div class="column">
+		<p>
+		Currently this poetry engine uses a topic modeling algorithm called latent dirichlet allocation (LDA). My favorite layman's explanation of LDA is by <a href="http://blog.echen.me/2011/08/22/introduction-to-latent-dirichlet-allocation/">Edwin Chen on his blog</a>. Basically LDA turns each poem into a bag of words: 12 cases of 'you', 3 cases of 'flower', etc. Then it finds clusters of words that commonly occur in poems together. These are considered the topics. Each poem has a distribution of all topics, a poem might be mostly topic 1 but partly topic 2 and very little topic 3. In this application, there are 20 topics.
+		</p>
+		<br />
+		<p>
+		Your recommended poem has similar topics to your selected poem, which mostly means it uses a similar vocabulary.
+		</p>
+	</div>
+	<div class="column">
+		<p></p>
+	</div>
+</div>
+
+
 
 
 	</div>

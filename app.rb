@@ -1,5 +1,6 @@
 require 'sinatra'
 require 'sequel'
+# require 'pg'
 require 'erb'
 
 DB = Sequel.connect('sqlite://poemdb2.db')
@@ -27,7 +28,7 @@ get '/poem/:id' do
 	@poem_content = @poem[:poem].gsub(/\n/, '<br>')
 	@rec_content = @rec_poem[:poem].gsub(/\n/, '<br>')
 
-	@relations = poem_distances.where(:poem1=>params['id']).or(:poem2=>params['id']).order(:distance).limit(10)
+	# @relations = poem_distances.where(:poem1=>params['id']).or(:poem2=>params['id']).order(:distance).limit(10)
 	erb :poem
 end
 

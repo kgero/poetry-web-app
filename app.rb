@@ -35,7 +35,7 @@ end
 
 post '/submit' do
 	query = params[:query]
-	@poems = poems.where(:poet => query).or(:title => query)
+	@poems = poems.full_text_search([:title, :poet], query)
 	@foo = "Results:"
 	if @poems.count == 0
 		@foo = "None found. Only exact matches are supported at this time. Try Charles Simic."

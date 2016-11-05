@@ -22,12 +22,18 @@ end
 get '/poem/:id' do
 	@poems = poems
 	@poem = poems.where(:id => params['id']).first
+	
+	if @poem[:close_poem] != nil
+		# entry = poem_distances.where(:poem1=>params['id']).or(:poem2=>params['id']).order(:distance).first
+		@rec_poem = poems.where(:id => @poem[:close_poem]).first
 
-	# entry = poem_distances.where(:poem1=>params['id']).or(:poem2=>params['id']).order(:distance).first
-	@rec_poem = poems.where(:id => @poem[:close_poem]).first
-
-	@poem_content = @poem[:poem].gsub(/\n/, '<br>')
-	@rec_content = @rec_poem[:poem].gsub(/\n/, '<br>')
+		@poem_content = @poem[:poem].gsub(/\n/, '<br>')
+		@rec_content = @rec_poem[:poem].gsub(/\n/, '<br>')
+	else
+		@poem_content = @poem[:poem].gsub(/\n/, '<br>')
+		@rec_poem = {'title': 'None', 'poet': 'None'}
+		@rec_content = "Sorry, we haven't run the algorithm on that poem yet!"
+	end
 
 	# @relations = poem_distances.where(:poem1=>params['id']).or(:poem2=>params['id']).order(:distance).limit(10)
 	erb :poem
@@ -36,7 +42,6 @@ end
 post '/submit' do
 	query = params[:query]
 	query = query.gsub(" ", "&")
-	puts query
 	@poems = poems.full_text_search([:title, :poet], query)
 	@foo = "Results:"
 	if @poems.count == 0

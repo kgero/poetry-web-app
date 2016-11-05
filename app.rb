@@ -35,6 +35,8 @@ end
 
 post '/submit' do
 	query = params[:query]
+	query = query.gsub(" ", "&")
+	puts query
 	@poems = poems.full_text_search([:title, :poet], query)
 	@foo = "Results:"
 	if @poems.count == 0

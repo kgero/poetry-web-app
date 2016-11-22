@@ -8,6 +8,12 @@ DB = Sequel.connect(ENV['DATABASE_URL'] || "postgres://qvigtqbjcjujkq:2aTeOgnlW1
 poems = DB[:poetry]
 # poem_distances = DB[:poem_distances]
 
+# TODO:
+# get surprise poem to send you to a random poem page
+# be able to click on an author and get a list of all poems by that author
+# make the nav bar better :'( :'(
+# better separate selected and recommended poem?
+
 get '/' do
 	rand_nums = 10.times.map{ Random.rand(poems.count) } 
 	@foo = "Or select a poem from random. Refresh the page to get another random set of poems."

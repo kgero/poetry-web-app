@@ -2,6 +2,20 @@
 <head>
     <title>Poetry Recommendation Engine</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.1.2/css/bulma.css">
+
+
+  <script src="/mark.js/dist/mark.min.js"></script>
+
+  <script>
+    console.log("executing mark.js test code");
+    var instance = new Mark(document.querySelector("div.column"));
+    instance.mark("text", {
+        "element": "span",
+        "className": "highlight"
+    });
+    console.log("executed mark.js test code");
+  </script>
+
 </head>
 <body>
 

@@ -24,9 +24,17 @@
 <p>All of this analysis is pre-run using a Python application I built which you can find on github <a href="github.com/kgero/poetry-engine" target="_blank">here</a>. I run the analysis locally and just save the closest poem links to a database.</p>
 
 <h3>In the Works</h3>
-<p>There are lots of things still to do. I'm speeding up how fast the analysis runs such that I can mess around with it more easily and try tuning it. I've been experimenting with different size features, weighting the size features differently, and which stop words to remove from the poems. Right now it can take up to an hour to run all the analysis on my database of 3850 poems, which doesn't promote experimentation. Plus I want to keep downloading more poems! So that's in the works.</p>
+<p>There are lots of things still to do. I'm speeding up how fast the analysis runs such that I can mess around with it more easily and try tuning it. Right now it can take up to an hour to run all the analysis on my database of 3850 poems, which doesn't promote experimentation. Plus I want to keep downloading more poems!</p>
 <br />
-<p>However, I also want a better way to understand on a case-by-case basis why two poems were considered similar by the topic modeling algorithm. For this I want to build into this web application an option to turn on an algorithm visualization which would highlight which words in the poems the algorithm weighted heavily, that way I can see which words across a selected and recommended poem most contributed to the "closeness".</p>
+<p>
+I've been experimenting with different size features and weighting the size features differently. I'm still figuring out which stop words to remove from the poems; the topics don't yet feel defined enough when I look at their top words. I'm currently using 20 topics, but more might help the topic become more defined.
+</p>
+<br />
+<p>
+There are plenty of fun visualizations to make to explore the space. How many poems have each other as their top poem? What does that network graph look like? Which topics are most seen in the poems? Which poets cluster around the same topics and which tend to spread out? What is the word distribution like on the poem and corpora level? How many 'rare' words are used?
+</p>
+<br />
+<p>I also want a better way to understand on a case-by-case basis why two poems were considered similar by the topic modeling algorithm. For this I want to build into this web application an option to turn on an algorithm visualization which would highlight which words in the poems the algorithm weighted heavily, that way I can see which words across a selected and recommended poem most contributed to the "closeness".</p>
 <br />
 <p>Last updated 20 Nov, 2016.</p>
 

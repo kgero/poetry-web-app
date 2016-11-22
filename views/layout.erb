@@ -7,17 +7,16 @@
   <script src="/mark.js/dist/mark.min.js"></script>
 
   <script>
-    console.log("executing mark.js test code");
-    var instance = new Mark(document.querySelector("div.column"));
-    instance.mark("text", {
-        "element": "span",
-        "className": "highlight"
-    });
-    console.log("executed mark.js test code");
+    function markup() {
+      console.log("executing mark.js test code");
+      var instance = new Mark(document.querySelector("div.column"));
+      instance.mark("the", {"debug": true});
+      console.log("executed mark.js test code");
+    }
   </script>
 
 </head>
-<body>
+<body onload="markup()">
 
 <section class="hero is-primary is-medium">
   <div class="hero-head">

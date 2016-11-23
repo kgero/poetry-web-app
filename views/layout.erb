@@ -2,21 +2,31 @@
 <head>
     <title>Poetry Recommendation Engine</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.1.2/css/bulma.css">
+    <link rel="stylesheet" href="/marking.css">
 
 
   <script src="/mark.js/dist/mark.min.js"></script>
+  <%= puts @topic1 %>
 
   <script>
-    function markup() {
+    function markup(mark_num) {
       console.log("executing mark.js test code");
-      var instance = new Mark(document.querySelector("div.column"));
-      instance.mark("the", {"debug": true});
+      console.log("<%= @topic1 %>");
+      var words = "<%= @topic1 %>";
+      var instance = new Mark(document.querySelector("span.poem1"));
+      for (var i = 0; i < words.length; i++) {
+        instance.mark(words[i], {"debug": true, "element": mark_num, "accuracy": "exactly"});
+      }
       console.log("executed mark.js test code");
+    }
+
+    function unmarkup(instance) {
+      instance.unmark();
     }
   </script>
 
 </head>
-<body onload="markup()">
+<body>
 
 <section class="hero is-primary is-medium">
   <div class="hero-head">

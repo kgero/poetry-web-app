@@ -17,12 +17,16 @@
 	<div class="column">
 		<h1 class="title"><%= @poem[:title] %></h1>
 		<h2 class="subtitle"><%= @poem[:poet] %></h2>
+		<span class="poem1">
 		<p><%= @poem_content %></p>
+		</span>
 	</div>
 	<div class="column">
 		<a href="/poem/<%= @rec_poem[:id] %>"><h1 class="title"><%= @rec_poem[:title] %></h1></a>
 		<h2 class="subtitle"><%= @rec_poem[:poet] %></h2>
+		<span class="poem2">
 		<p><%= @rec_content %></p>
+		</span>
 	</div>
 </div>
 
@@ -44,6 +48,9 @@
 
 	<div class="columns">
 	<div class="column">
+		<p>
+		<a class="button is-primary" onclick="markup('mark1')">Click to view</a>
+		</p>
 		<p>
 		Currently this poetry engine uses a topic modeling algorithm called latent dirichlet allocation (LDA) which sorts each poem into a set of topics. For each poem I look for another poem with the most similar topics. I also make sure that the poems look similar -- that they have a (relatively) similar number of lines and words per line. So your recommended poem has similar topics to your selected poem and visually looks about the same. 
 		</p>

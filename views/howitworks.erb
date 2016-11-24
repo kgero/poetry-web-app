@@ -12,23 +12,41 @@
 <div class="container">
 	<div class="content">
 
-<p>Currently this recommendation engine looks at two features: topics of a poem and the size of the poem.</p>
+<h1>I want you to find a poem you love.</h1>
+
+<p>This project comes from a very human desire: to share something I find meaningful. Poems are hard to love, but when one makes it into your soul it can be the most powerful thing. How do we find poems to love?</p>
+
+<p>This is my idea: you might have one or two poems you really love. You found them at some point in your life and they just clicked. If I could give you one more poem you love, you can sit with it and take it into your heart and love it. One more poem! Amazing. And then, maybe, one more poem you love. Slowly you build a larger library of poems. Eventually it becomes easier to love new ones.</p>
+
+<p>The Poetry Recommendation Engine takes one poem and tries to give you one other poem that can touch you. You can take it from there.</p>
+
+<h1>This is how the engine works.</h1>
+
+<p>The Poetry Recommendation Engine currently looks at two aspects of each poem and then selects another poem that is most similar in these two aspects. The first is the topic of the poem, which I'll talk more about in a moment, but suffice to say it looks at the vocabulary of the poem and tries to find poems with a similar vocabulary. The second is the shape of the poem, specifically the average number of words in a line and the number of lines in the whole poem. (Fun fact: the shape part of the engine is currently turned off while I tune the topic part. This is a work in progress! More on that later also.)
 
 <h3>Topics</h3>
 <p>The topics are generated using a topic modeling algorithm called latent dirichlet allocation (LDA). My favorite layman's explanation of LDA is by <a href="http://blog.echen.me/2011/08/22/introduction-to-latent-dirichlet-allocation/" target="_blank">Edwin Chen on his blog</a>. My favorite technical explanation of LDA is by <a href="http://videolectures.net/mlss09uk_blei_tm/" target="_blank">Prof. David Blei in this lecture</a>. Basically LDA turns each poem into a bag of words: 12 cases of 'you', 3 cases of 'flower', etc. Then it finds clusters of words that commonly occur in poems together. These are considered the topics. Each poem has a distribution of all topics, a poem might be mostly topic 1 but partly topic 2 and very little topic 3. In this application, there are 20 topics. So for each poem I can find the "closest" poem by look at how similar their topic distributions are.</p>
 
-<h3>Size (or Shape)</h3>
-<p>However, it's also pretty important how the poems look on the page (or rather screen.) Having a short Emily Dickinson poem matched to a long Allen Ginsberg poem feels wrong. So in addition to looking at how similar the topics are, I also look at how similar the shapes of the poems are by comparing the number of lines and the average words per line. (Actually, this is turned off right now because I'm changing some stuff... it'll be turned back on later.)</p>
+<h3>Code Source</h3>
+<p>All of this analysis is pre-run using a Python application I built which you can find on github <a href="github.com/kgero/poetry-engine" target="_blank">here</a>. I run the analysis locally and just save the closest poem links to a database. I must say -- it's a little slow! But I'm focusing on the output and user experience, so I only optimize for speed when I get really fed up with it.</p>
 
-<h3>Code Source?</h3>
-<p>All of this analysis is pre-run using a Python application I built which you can find on github <a href="github.com/kgero/poetry-engine" target="_blank">here</a>. I run the analysis locally and just save the closest poem links to a database.</p>
+<h1>Who am I.</h1>
 
-<h3>In the Works</h3>
-<p>There are lots of things still to do. I'm speeding up how fast the analysis runs such that I can mess around with it more easily and try tuning it. I've been experimenting with different size features, weighting the size features differently, and which stop words to remove from the poems. Right now it can take up to an hour to run all the analysis on my database of 3850 poems, which doesn't promote experimentation. Plus I want to keep downloading more poems! So that's in the works.</p>
+<p>Hi! My name is Katy and I became obsessed with the idea of a poetry recommendation engine in early 2016. I'm a writer-slash-engineer and what I like to do is make things. I used to make physical things (undergraduate degree in mechanical engineering) and now I make computer things (data scientist) but I've always made things with words. I blog about things I make <a href="https://katygero.wordpress.com" target="_blank">here</a> and about the books I read <a href="https://theilonkareader.wordpress.com" target="_blank">here</a>.</p>
+
+<h1>A work in progress.</h1>
+
+<p>There are lots of things still to do! This project is still in its early stages.</p>
+
+<ul>
+<li>Be able to turn on a topic visualizer which highlights the words in the two poems that contributed most to saying they have a similar topic.</li>
+<li>Use the visualizer to tune the topic modeling algorithm. Perhaps I should lemmatize words before running the model, or remove more stop words, or create more topics.</li>
+<li>Download more poems! I currently have about 4,000, but I think I should be able to find 10,000 publicly available poems from <a href="https://www.poetryfoundation.org" target="_blank">Poetry Foundation</a>.</li>
+<li>Tune the weighting between the topics and the size.</li>
+<li>Improve the website experience!</li>
+</ul>
 <br />
-<p>However, I also want a better way to understand on a case-by-case basis why two poems were considered similar by the topic modeling algorithm. For this I want to build into this web application an option to turn on an algorithm visualization which would highlight which words in the poems the algorithm weighted heavily, that way I can see which words across a selected and recommended poem most contributed to the "closeness".</p>
-<br />
-<p>Last updated 20 Nov, 2016.</p>
+<p>Last updated 23 Nov, 2016.</p>
 
 </div>
 </div>

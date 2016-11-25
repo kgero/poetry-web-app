@@ -38,6 +38,8 @@ get '/poem/:id' do
 		@rec_content = "Sorry, we haven't run the algorithm on that poem yet!"
 	end
 
+	@topic = topics.where(:id => @poem[:top_topic]).first
+	@words = [@topic[:word0], @topic[:word1], @topic[:word2], @topic[:word3], @topic[:word4], @topic[:word5], @topic[:word6], @topic[:word7]]
 	@topic1 = ['the', 'i', 'poem']
 
 	erb :poem

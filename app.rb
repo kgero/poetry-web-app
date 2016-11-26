@@ -39,10 +39,15 @@ get '/poem/:id' do
 	end
 
 	@topic = topics.where(:id => @poem[:top_topic]).first
-	@words = [@topic[:word0], @topic[:word1], @topic[:word2], @topic[:word3], @topic[:word4], @topic[:word5], @topic[:word6], @topic[:word7]]
+	@words = @topic.values[1..-1]
 	@topic1 = ['the', 'i', 'poem']
 
 	erb :poem
+end
+
+get '/surprise' do
+	rand_num = Random.rand(poems.count)
+	redirect to('/poem/'+String(rand_num))
 end
 
 post '/submit' do

@@ -9,6 +9,29 @@
     </div>
   </div>
 </section>
+<section class="hero is-primary is-medium">
+  <div class="hero-foot">
+  <div class="container">
+  <nav class="nav">
+ 
+  <div class="nav-left nav-menu">
+    <a class="nav-item" onclick="markup('mark1')">
+      Turn On Algoirthm Visualization
+    </a>
+    <a class="nav-item" onclick="unmarkup()">
+      Turn Off Algoirthm Visualization
+    </a>
+    <a class="nav-item" href="#why">
+      Why Was This Recommended?
+    </a>
+    <a class="nav-item" href="/">
+      Search For Another Poem
+    </a>
+  </div>
+</nav>
+</div>
+</div>
+</section>
 
 <section class="section">
 	<div class="container">
@@ -17,14 +40,14 @@
 	<div class="column">
 		<h1 class="title"><%= @poem[:title] %></h1>
 		<h2 class="subtitle"><%= @poem[:poet] %></h2>
-		<span class="poem">
+		<span class="poem1">
 		<p><%= @poem_content %></p>
 		</span>
 	</div>
 	<div class="column">
 		<a href="/poem/<%= @rec_poem[:id] %>"><h1 class="title"><%= @rec_poem[:title] %></h1></a>
 		<h2 class="subtitle"><%= @rec_poem[:poet] %></h2>
-		<span class="poem">
+		<span class="poem2">
 		<p><%= @rec_content %></p>
 		</span>
 	</div>
@@ -34,7 +57,7 @@
 </section>
 
 <section class="hero is-primary">
-  <div class="hero-body">
+  <div class="hero-body" id="why">
     <div class="container">
       <h1 class="title">
         Why was this poem recommended?
@@ -49,17 +72,11 @@
 	<div class="columns">
 	<div class="column">
 		<p>
-		<a class="button is-primary" onclick="markup('mark1')">Click to view</a>
-		</p>
-		<p>
-		<a class="button is-primary" onclick="unmarkup()">Click to unview</a>
-		</p>
-		<p>
-		Currently this poetry engine uses a topic modeling algorithm called latent dirichlet allocation (LDA) which sorts each poem into a set of topics. For each poem I look for another poem with the most similar topics. I also make sure that the poems look similar -- that they have a (relatively) similar number of lines and words per line. So your recommended poem has similar topics to your selected poem and visually looks about the same. 
+		Currently this poetry engine uses a topic modeling algorithm called latent dirichlet allocation (LDA) which sorts each poem into a set of topics based on their vocabulary. For each poem I look for another poem with the most similar topics. I also make sure that the poems look similar -- that they have a (relatively) similar number of lines and words per line. So your recommended poem has similar topics to your selected poem and visually looks about the same. 
 		</p>
 		<br />
 		<p>
-		I go into the algorithm more deeply on the <a href="../howitworks">how it works</a> page.
+		I go into the algorithm more deeply on the <a href="../howitworks">about</a> page.
 		</p>
 	</div>
 	<div class="column">

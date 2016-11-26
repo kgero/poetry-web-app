@@ -13,16 +13,24 @@
     function markup(mark_num) {
       console.log("executing mark.js test code");
       console.log(<%= @words %>);
-      var instance = new Mark(document.querySelector("span.poem"));
+      var instance = new Mark(document.querySelector("span.poem1"));
       var words = <%= @words %>;
       for (var i = 0; i < words.length; i++) {
-        instance.mark(words[i], {"debug": true, "element": mark_num, "accuracy": "exactly"});
+        instance.mark(words[i], {"debug": true, "element": "span", "className": mark_num, "accuracy": "exactly"});
+      }
+
+      var instance = new Mark(document.querySelector("span.poem2"));
+      var words = <%= @words %>;
+      for (var i = 0; i < words.length; i++) {
+        instance.mark(words[i], {"debug": true, "element": "span", "className": mark_num, "accuracy": "exactly"});
       }
       console.log("executed mark.js test code");
     }
 
     function unmarkup() {
-      var instance = new Mark(document.querySelector("span.poem"));
+      var instance = new Mark(document.querySelector("span.poem1"));
+      instance.unmark();
+      var instance = new Mark(document.querySelector("span.poem2"));
       instance.unmark();
     }
   </script>
@@ -32,6 +40,7 @@
 
 <section class="hero is-primary is-medium">
   <div class="hero-head">
+  <div class="container">
   <nav class="nav">
  
   <div class="nav-right nav-menu">
@@ -41,11 +50,12 @@
     <a class="nav-item" href="/howitworks">
       About
     </a>
-    <a class="nav-item" href="/poem/256">
+    <a class="nav-item" href="/surprise">
       Surprise Poem
     </a>
   </div>
 </nav>
+</div>
 </div>
 </section>
 

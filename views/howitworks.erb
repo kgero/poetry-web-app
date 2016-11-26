@@ -1,10 +1,44 @@
+<section class="hero is-primary">
+  <div class="hero-body">
+    <div class="container">
+      <h1 class="title">
+        How does the analysis work?
+      </h1>
+    </div>
+  </div>
+</section>
 
-<h1 class="title">Poetry Recommendation Engine</h1>
+<section class="section">
+<div class="container">
+	<div class="content">
 
-<h2 class="subtitle">How does the analysis work?</h2>
+<p>Currently this recommendation engine looks at two features: topics of a poem and the size of the poem.</p>
 
+<h3>Topics</h3>
+<p>The topics are generated using a topic modeling algorithm called latent dirichlet allocation (LDA). My favorite layman's explanation of LDA is by <a href="http://blog.echen.me/2011/08/22/introduction-to-latent-dirichlet-allocation/" target="_blank">Edwin Chen on his blog</a>. My favorite technical explanation of LDA is by <a href="http://videolectures.net/mlss09uk_blei_tm/" target="_blank">Prof. David Blei in this lecture</a>. Basically LDA turns each poem into a bag of words: 12 cases of 'you', 3 cases of 'flower', etc. Then it finds clusters of words that commonly occur in poems together. These are considered the topics. Each poem has a distribution of all topics, a poem might be mostly topic 1 but partly topic 2 and very little topic 3. In this application, there are 20 topics. So for each poem I can find the "closest" poem by look at how similar their topic distributions are.</p>
+
+<h3>Size (or Shape)</h3>
+<p>However, it's also pretty important how the poems look on the page (or rather screen.) Having a short Emily Dickinson poem matched to a long Allen Ginsberg poem feels wrong. So in addition to looking at how similar the topics are, I also look at how similar the shapes of the poems are by comparing the number of lines and the average words per line. (Actually, this is turned off right now because I'm changing some stuff... it'll be turned back on later.)</p>
+
+<h3>Code Source?</h3>
+<p>All of this analysis is pre-run using a Python application I built which you can find on github <a href="github.com/kgero/poetry-engine" target="_blank">here</a>. I run the analysis locally and just save the closest poem links to a database.</p>
+
+<h3>In the Works</h3>
+<p>There are lots of things still to do. I'm speeding up how fast the analysis runs such that I can mess around with it more easily and try tuning it. Right now it can take up to an hour to run all the analysis on my database of 3850 poems, which doesn't promote experimentation. Plus I want to keep downloading more poems!</p>
 <br />
+<p>
+I've been experimenting with different size features and weighting the size features differently. I'm still figuring out which stop words to remove from the poems; the topics don't yet feel defined enough when I look at their top words. I'm currently using 20 topics, but more might help the topic become more defined.
+</p>
+<br />
+<p>
+There are plenty of fun visualizations to make to explore the space. How many poems have each other as their top poem? What does that network graph look like? Which topics are most seen in the poems? Which poets cluster around the same topics and which tend to spread out? What is the word distribution like on the poem and corpora level? How many 'rare' words are used?
+</p>
+<br />
+<p>I also want a better way to understand on a case-by-case basis why two poems were considered similar by the topic modeling algorithm. For this I want to build into this web application an option to turn on an algorithm visualization which would highlight which words in the poems the algorithm weighted heavily, that way I can see which words across a selected and recommended poem most contributed to the "closeness".</p>
+<br />
+<p>Last updated 20 Nov, 2016.</p>
 
-<p>Let me explain it to you!</p>
-
+</div>
+</div>
+</section>
 

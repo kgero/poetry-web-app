@@ -2,7 +2,7 @@
   <div class="hero-body">
     <div class="container">
       <h1 class="title">
-        How does the analysis work?
+        What is this all about?
       </h1>
     </div>
   </div>
@@ -22,10 +22,17 @@
 
 <h1>This is how the engine works.</h1>
 
-<p>The Poetry Recommendation Engine currently looks at two aspects of each poem and then selects another poem that is most similar in these two aspects. The first is the topic of the poem, which I'll talk more about in a moment, but suffice to say it looks at the vocabulary of the poem and tries to find poems with a similar vocabulary. The second is the shape of the poem, specifically the average number of words in a line and the number of lines in the whole poem. (Fun fact: the shape part of the engine is currently turned off while I tune the topic part. This is a work in progress! More on that later also.)
+<p>The Poetry Recommendation Engine currently looks at two aspects of each poem and then selects another poem that is most similar in these two aspects. The first is the topic of the poem, which I'll talk more about in a moment, but suffice to say it looks at the vocabulary of the poem and tries to find poems with a similar vocabulary. The second is the shape of the poem, specifically the average number of words in a line and the number of lines in the whole poem. (Note: the shape part of the engine is currently turned off while I tune the topic part. This is a work in progress! More on that later also.)
 
 <h3>Topics</h3>
-<p>The topics are generated using a topic modeling algorithm called latent dirichlet allocation (LDA). My favorite layman's explanation of LDA is by <a href="http://blog.echen.me/2011/08/22/introduction-to-latent-dirichlet-allocation/" target="_blank">Edwin Chen on his blog</a>. My favorite technical explanation of LDA is by <a href="http://videolectures.net/mlss09uk_blei_tm/" target="_blank">Prof. David Blei in this lecture</a>. Basically LDA turns each poem into a bag of words: 12 cases of 'you', 3 cases of 'flower', etc. Then it finds clusters of words that commonly occur in poems together. These are considered the topics. Each poem has a distribution of all topics, a poem might be mostly topic 1 but partly topic 2 and very little topic 3. In this application, there are 20 topics. So for each poem I can find the "closest" poem by look at how similar their topic distributions are.</p>
+<p>The topics are generated using a topic modeling algorithm called latent dirichlet allocation (LDA). My favorite layman's explanation of LDA is by <a href="http://blog.echen.me/2011/08/22/introduction-to-latent-dirichlet-allocation/" target="_blank">Edwin Chen on his blog</a>. My favorite technical explanation of LDA is by <a href="http://videolectures.net/mlss09uk_blei_tm/" target="_blank">Prof. David Blei in this lecture</a>. Basically LDA turns each poem into a bag of words: 12 cases of 'you', 3 cases of 'flower', etc. Then it finds clusters of words that commonly occur in poems together. These are considered the topics. Each poem has a distribution of all topics, a poem might be mostly topic 1 but partly topic 2 and very little topic 3. In this application, there are 20 topics.</p>
+
+<p>So for each poem I can find the "closest" poem by look at how similar their topic distributions are. I used to calculate the sum of the distances between all topics (for every pair of poems) and then pick the poem with the lowest sum of distances. However, I was worried that tail of infrequent topics were too influential. Right now the way I do that is pick the poem with the closest value for the top topic. My hope was that this would help also its interpretability, however I also think it is causing some issues because it completely ignores the less probable topics. My next thought is to try looking at the rank of topics.</p>
+
+<p>All of this feels a little undirected, but really I am looking for an algorithm that is interpretable by the topic visualizer. Right now it doesn't make sense. That could be a problem with the visualizer, more comments on that below, but it is also likely a problem with the algorithm.</p>
+
+<h3>Topic Visualization</h3>
+<p>If you turn on the topic visualization the application highlights all occurrences of the top 20 words in the top topic for the poems. (Each topic is really a distribution of words -- every word is in every topic, but some occur very infrequently.) What you'll notice at this point is that not many words are highlighted, and they don't feel very important! This <b>could</b> be because the more downstream words (i.e. less frequently seen in the topic) are making a difference, or because the more downstream topics are. Figuring out if that's the case, versus the topic modeling just doesn't do much for poetry, is on my to-do list below.</p>
 
 <h3>Code Source</h3>
 <p>All of this analysis is pre-run using a Python application I built which you can find on github <a href="github.com/kgero/poetry-engine" target="_blank">here</a>. I run the analysis locally and just save the closest poem links to a database. I must say -- it's a little slow! But I'm focusing on the output and user experience, so I only optimize for speed when I get really fed up with it.</p>
@@ -39,14 +46,15 @@
 <p>There are lots of things still to do! This project is still in its early stages.</p>
 
 <ul>
-<li>Be able to turn on a topic visualizer which highlights the words in the two poems that contributed most to saying they have a similar topic.</li>
-<li>Use the visualizer to tune the topic modeling algorithm. Perhaps I should lemmatize words before running the model, or remove more stop words, or create more topics.</li>
+<li>Have the topic visualizer highlight the top three topics and maybe highlight more than the top 20 words per topic.</li>
+<li>See if removing the top 100 more frequent words makes the topics more interpretable.</li>
+<li>Find closest poems by looking at the rank of topics, not just the top topic.</li>
 <li>Download more poems! I currently have about 4,000, but I think I should be able to find 10,000 publicly available poems from <a href="https://www.poetryfoundation.org" target="_blank">Poetry Foundation</a>.</li>
 <li>Tune the weighting between the topics and the size.</li>
-<li>Improve the website experience!</li>
+<li>Add some way for users to give feedback on the engine.</li>
 </ul>
 <br />
-<p>Last updated 23 Nov, 2016.</p>
+<p>Last updated 25 Nov, 2016.</p>
 
 </div>
 </div>

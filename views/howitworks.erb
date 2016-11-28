@@ -31,6 +31,12 @@
 
 <p>All of this feels a little undirected, but really I am looking for an algorithm that is interpretable by the topic visualizer. Right now it doesn't make sense. That could be a problem with the visualizer, more comments on that below, but it is also likely a problem with the algorithm.</p>
 
+<h4>Stop Words</h4>
+<p>At first I didn't remove any stop words, which had clear problems of the word 'the' being ranked highly for most topics. I've slowly been removing more and more stop words to try to get better topic formation. At this point I'm removing the top 100 occuring words in the corpus. They are listed below.</p>
+
+<p style="margin-left: 20px">the and of a to in i that is with it you my on for as his he from was not but her like we all at me or they this be by are your no their one when its so what she have out there who an if our will into up where now then him were them had down which how love us through do can would more over back time see night some know could man light only still has day come here eyes way long old each life never about too say am go said than
+</p>
+
 <h3>Topic Visualization</h3>
 <p>If you turn on the topic visualization the application highlights all occurrences of the top 20 words in the top topic for the poems. (Each topic is really a distribution of words -- every word is in every topic, but some occur very infrequently.) What you'll notice at this point is that not many words are highlighted, and they don't feel very important! This <b>could</b> be because the more downstream words (i.e. less frequently seen in the topic) are making a difference, or because the more downstream topics are. Figuring out if that's the case, versus the topic modeling just doesn't do much for poetry, is on my to-do list below.</p>
 
@@ -47,14 +53,14 @@
 
 <ul>
 <li>Have the topic visualizer highlight the top three topics and maybe highlight more than the top 20 words per topic.</li>
-<li>See if removing the top 100 more frequent words makes the topics more interpretable.</li>
+<li>Try generating more topics -- maybe 100 instead of 20.</li>
 <li>Find closest poems by looking at the rank of topics, not just the top topic.</li>
 <li>Download more poems! I currently have about 4,000, but I think I should be able to find 10,000 publicly available poems from <a href="https://www.poetryfoundation.org" target="_blank">Poetry Foundation</a>.</li>
 <li>Tune the weighting between the topics and the size.</li>
 <li>Add some way for users to give feedback on the engine.</li>
 </ul>
 <br />
-<p>Last updated 25 Nov, 2016.</p>
+<p>Last updated 27 Nov, 2016.</p>
 
 </div>
 </div>

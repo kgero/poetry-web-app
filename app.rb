@@ -20,6 +20,11 @@ get '/' do
 end
 
 get '/howitworks' do
+	@topics = {}
+	for i in 1..20
+		topic = topics.where(:id => i).first
+		@topics[i] = topic.values[1..-1]
+	end
 	erb :howitworks
 end
 

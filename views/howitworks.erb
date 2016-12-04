@@ -29,7 +29,38 @@
 
 <p>So for each poem I can find the "closest" poem by look at how similar their topic distributions are. I used to calculate the sum of the distances between all topics (for every pair of poems) and then pick the poem with the lowest sum of distances. However, I was worried that tail of infrequent topics were too influential. Right now the way I do that is pick the poem with the closest value for the top topic. My hope was that this would help also its interpretability, however I also think it is causing some issues because it completely ignores the less probable topics. My next thought is to try looking at the rank of topics.</p>
 
-<p>All of this feels a little undirected, but really I am looking for an algorithm that is interpretable by the topic visualizer. Right now it doesn't make sense. That could be a problem with the visualizer, more comments on that below, but it is also likely a problem with the algorithm.</p>
+<p>All of this feels a little undirected, but really I am looking for an algorithm that is interpretable by the topic visualizer. Right now it doesn't make sense most of the time. Why?</p>
+
+<h4>What's Wrong With Topic Modeling?</h4>
+
+<p>Look at the topics below: some seem to make sense, but most seem random. I'm setting alpha to 0.1 and document topic distributions are fairly pointed, i.e. the distribution is not very even, which is good. But the topic words don't make a lot of sense.</p>
+
+<p>Even if the topics made sense, the average number of words from the top 20 words in the top topic of a poem is 2.5 words per poem or 1% of all words in the poem! It does not dramatically improve if I look at the top 3 topics: that gets me to 8.5 words or 4%. I have tried generating far more topics, also doesn't help. This implies that the topics aren't strongly correlated with their top topics.</p>
+
+<p>Okay, some theories for this;
+
+<ul>
+	<li>My corpora isn't large enough. 4,000 poems is really not that many, especially given that many poems are short.</li>
+	<li>Topic modeling doesn't work well for poetry because poems don't repeat their topical words. The vocabulary for poetry is far larger than the vocabulary for e.g. newspapers. (I should get some hard numbers on this eventually.)</li>
+	<li>The topics of poems are not reflected in their vocabulary. A poem about heartbreak could use flowers as a metaphor. How do we know the poem is about heartbreak? (I'm least convinced by this.)</li>
+</ul>
+
+<p>Still working on how far to push topic modeling before deciding it's not a good direction for this kind of corpora and moving to something else. Ideally I'd have time to evaluate each of my theories for the current failure of topic modeling such that I could come to a metric-based decision. e.g. I could look at how the topics change as the corpora increases for a known corpora that works well with topic modeling and for my poetry corpora and see when I would expect the topics to start to stabilize. Maybe one day.</p>
+
+<h4>Topic Words</h4>
+
+<p>What are these crazy topics that are generated! Great question. Below is the list of topics and the top 20 words in each topic. Not that all poems are "cleaned" which means I make everything lowercase and remove punctuation.</p>
+
+<ol>
+<% for i in 1..20 %>
+	<li>
+		<% @topics[i].each do |word| %>
+			<%= word %>, 
+		<% end %>
+	</li>
+<% end %>
+</ol>
+
 
 <h4>Stop Words</h4>
 <p>At first I didn't remove any stop words, which had clear problems of the word 'the' being ranked highly for most topics. I've slowly been removing more and more stop words to try to get better topic formation. At this point I'm removing the top 100 occuring words in the corpus. They are listed below.</p>
@@ -60,7 +91,7 @@
 <li>Add some way for users to give feedback on the engine.</li>
 </ul>
 <br />
-<p>Last updated 27 Nov, 2016.</p>
+<p>Last updated 3 Dec, 2016.</p>
 
 </div>
 </div>

@@ -43,10 +43,6 @@ get '/poem/:id' do
 		@rec_content = "Sorry, we haven't run the algorithm on that poem yet!"
 	end
 
-	@topic = topics.where(:id => @poem[:top_topic]).first
-	@words = @topic.values[1..-1]
-	@topic1 = ['the', 'i', 'poem']
-
 	erb :poem
 end
 

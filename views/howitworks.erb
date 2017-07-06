@@ -22,20 +22,91 @@
 
 <h1>This is how the engine works.</h1>
 
-<p>The Poetry Recommendation Engine currently looks at two aspects of each poem and then selects another poem that is most similar in these two aspects. The first is the topic of the poem, which I'll talk more about in a moment, but suffice to say it looks at the vocabulary of the poem and tries to find poems with a similar vocabulary. The second is the shape of the poem, specifically the average number of words in a line and the number of lines in the whole poem. (Note: the shape part of the engine is currently turned off while I tune the topic part. This is a work in progress! More on that later also.)
+<p>The Poetry Recommendation Engine currently looks at a set of computer-generated features that describe your poem and finds another poem in the database with the most similar set of features. "Most similar" means it finds the poem with the smallest sum of the square of differences for each feature.</p>
 
-<h3>Topics</h3>
-<p>The topics are generated using a topic modeling algorithm called latent dirichlet allocation (LDA). My favorite layman's explanation of LDA is by <a href="http://blog.echen.me/2011/08/22/introduction-to-latent-dirichlet-allocation/" target="_blank">Edwin Chen on his blog</a>. My favorite technical explanation of LDA is by <a href="http://videolectures.net/mlss09uk_blei_tm/" target="_blank">Prof. David Blei in this lecture</a>. Basically LDA turns each poem into a bag of words: 12 cases of 'you', 3 cases of 'flower', etc. Then it finds clusters of words that commonly occur in poems together. These are considered the topics. Each poem has a distribution of all topics, a poem might be mostly topic 1 but partly topic 2 and very little topic 3. In this application, there are 20 topics.</p>
+<h2>Size Features</h2>
 
-<p>So for each poem I can find the "closest" poem by look at how similar their topic distributions are. I used to calculate the sum of the distances between all topics (for every pair of poems) and then pick the poem with the lowest sum of distances. However, I was worried that tail of infrequent topics were too influential. Right now the way I do that is pick the poem with the closest value for the top topic. My hope was that this would help also its interpretability, however I also think it is causing some issues because it completely ignores the less probable topics. My next thought is to try looking at the rank of topics.</p>
+<p>These features describe the look of the poem on the page. They are easy to calculate so I started with these.</p>
 
-<p>All of this feels a little undirected, but really I am looking for an algorithm that is interpretable by the topic visualizer. Right now it doesn't make sense. That could be a problem with the visualizer, more comments on that below, but it is also likely a problem with the algorithm.</p>
+<ul>
 
-<h3>Topic Visualization</h3>
-<p>If you turn on the topic visualization the application highlights all occurrences of the top 20 words in the top topic for the poems. (Each topic is really a distribution of words -- every word is in every topic, but some occur very infrequently.) What you'll notice at this point is that not many words are highlighted, and they don't feel very important! This <b>could</b> be because the more downstream words (i.e. less frequently seen in the topic) are making a difference, or because the more downstream topics are. Figuring out if that's the case, versus the topic modeling just doesn't do much for poetry, is on my to-do list below.</p>
+<li><p><strong>Number of Words</strong> 
+Pretty self-explanatory.</p>
+</li>
 
-<h3>Code Source</h3>
-<p>All of this analysis is pre-run using a Python application I built which you can find on github <a href="github.com/kgero/poetry-engine" target="_blank">here</a>. I run the analysis locally and just save the closest poem links to a database. I must say -- it's a little slow! But I'm focusing on the output and user experience, so I only optimize for speed when I get really fed up with it.</p>
+<li><p><strong>Number of Lines</strong> 
+Yup.</p>
+</li>
+
+<li><p><strong>Width in Characters</strong> This is the average line length in characters. This gives a sense of how wide the poem sits on the page.</p>
+</li>
+
+<li><p><strong>Average Word Size</strong> 
+This is the average size of a word in characters. The idea here is to get a feel for the types of words in the poem -- lots of long words or mostly short ones? Technically this could count as a vocabulary feature but it's calculated like a size one.</p>
+</li>
+
+</ul>
+
+<h2>Vocabulary Features</h2>
+
+<p>These features try to describe the vocabulary the poem uses.
+
+<ul>
+
+<li><p><strong>RepetitionScore</strong> 
+A score of 0 means no word or <i>stem</i> of word is repeated. A score of 1 means every single word is exactly the same. It's calculated as follows: Each word in the poem contributes 1 if it is repeated exactly elsewhere in the poem, 0.5 if its stem (using the Snowball Stemmer) is repeated elsewhere, or 0 if not. Then the score is divided by the number of words in the poem.</p>
+</li>
+
+<li><p><strong>Obscurity Score</strong> 
+A score of 0 means every word is found in the top 1000 used English words according to <a href="wordfrequency.info">WordFrequency.Info</a>. Each word not found in the top 1000 contributes 1; the score is them divided by the number of words in the poem.</p>
+</li>
+
+</ul>
+
+<h1>Previous incarnations to haunt me.</h1>
+
+<h2>Topic Modeling</h2>
+
+<h4>What's Wrong With Topic Modeling?</h4>
+
+<p>My first iteration of the this project used topic modeling, specifically an algorithm called latent dirichlet allocation (LDA). My favorite layman's explanation of LDA is by <a href="http://blog.echen.me/2011/08/22/introduction-to-latent-dirichlet-allocation/" target="_blank">Edwin Chen on his blog</a>. My favorite technical explanation of LDA is by <a href="http://videolectures.net/mlss09uk_blei_tm/" target="_blank">Prof. David Blei in this lecture</a>. Basically LDA turns each poem into a bag of words: 12 cases of 'you', 3 cases of 'flower', etc. Then it finds clusters of words that commonly occur in poems together. These are considered the topics. Each poem has a distribution of all topics, a poem might be mostly topic 1 but partly topic 2 and very little topic 3. In this application, there were 20 topics. (An arbitrary choice I made.) I would recommend a poem with similar topics; I tried a couple different definitions of 'similar' none of which ever produced very good or interpretable results.</p>
+
+<p>I didn't think topic modeling worked very well in this application. When I looked at the resulting topics, which I've left below for the curious, some seem to make sense, but most seem random. I set alpha to 0.1 and document topic distributions are fairly pointed, i.e. the distribution is not very even, which is good. But the topic words don't make a lot of sense.</p>
+
+<p>Even if the topics had made sense, the average number of words from the top 20 words in the top topic of a poem was 2.5 words per poem or only 1% of all words in the poem! It does not dramatically improve if I look at the top 3 topics: that gets me to 8.5 words or 4%. I tried generating far more topics; also doesn't help. This implies that the poems aren't strongly correlated with their top topics.</p>
+
+<p>Some theories for this;
+
+<ul>
+	<li>My corpora isn't large enough. 5,000 poems is really not that many, especially given that many poems are short.</li>
+	<li>Poems don't have enough words in them to strongly correlate with their topics. (Compared to, say, newspaper articles.)</li>
+	<li>Topic modeling doesn't work well for poetry because poems don't repeat their topical words. The vocabulary for poetry is far larger than the vocabulary for e.g. newspapers. (I should get some hard numbers on this eventually.)</li>
+	<li>The topics of poems are not reflected in their vocabulary. A poem about heartbreak could use flowers as a metaphor. How do we know the poem is about heartbreak? (I'm least convinced by this.)</li>
+</ul>
+
+<p>The other problem with topic modeling is that I did not get the same topics each time. So if I ran the topic modeling 20 times, I'd get 20 different recommendations. While this has some benefits, it meant I was unable to really dig in to improve it because it would change so drastically in each iteration</p>
+
+<h4>Topic Words</h4>
+
+<p>What are these crazy topics that are generated! Great question. Below is the list of topics and the top 20 words in each topic. Not that all poems are "cleaned" which means I make everything lowercase and remove punctuation.</p>
+
+<ol>
+<% for i in 1..20 %>
+	<li>
+		<% @topics[i].each do |word| %>
+			<%= word %>, 
+		<% end %>
+	</li>
+<% end %>
+</ol>
+
+
+<h4>Stop Words</h4>
+<p>At first I didn't remove any stop words, which had clear problems of the word 'the' being ranked highly for most topics. I've slowly been removing more and more stop words to try to get better topic formation. At this point I'm removing the top 100 occuring words in the corpus. They are listed below.</p>
+
+<p style="margin-left: 20px">the and of a to in i that is with it you my on for as his he from was not but her like we all at me or they this be by are your no their one when its so what she have out there who an if our will into up where now then him were them had down which how love us through do can would more over back time see night some know could man light only still has day come here eyes way long old each life never about too say am go said than
+</p>
+
 
 <h1>Who am I.</h1>
 
@@ -46,15 +117,14 @@
 <p>There are lots of things still to do! This project is still in its early stages.</p>
 
 <ul>
-<li>Have the topic visualizer highlight the top three topics and maybe highlight more than the top 20 words per topic.</li>
-<li>See if removing the top 100 more frequent words makes the topics more interpretable.</li>
-<li>Find closest poems by looking at the rank of topics, not just the top topic.</li>
-<li>Download more poems! I currently have about 4,000, but I think I should be able to find 10,000 publicly available poems from <a href="https://www.poetryfoundation.org" target="_blank">Poetry Foundation</a>.</li>
-<li>Tune the weighting between the topics and the size.</li>
-<li>Add some way for users to give feedback on the engine.</li>
+<li>Get some features that describe rhyme! This will be hard but fun.</li>
+<li>I have some copyright information about the poems which I can parse to look for dates of publication and use that as a feature.</li>
+<li>I have tags from Poetry Foundation; this can also be used.</li>
+<li>Generate features that describe line length variability, white space usage, and punctuation usage.</li>
+<li>There are some online word catalogues that could allow me to create scores for concreteness, emotion, etc. based purely on the vocabulary.</li>
 </ul>
 <br />
-<p>Last updated 25 Nov, 2016.</p>
+<p>Last updated July, 2017.</p>
 
 </div>
 </div>

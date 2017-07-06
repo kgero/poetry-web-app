@@ -15,12 +15,6 @@
   <nav class="nav">
  
   <div class="nav-left nav-menu">
-    <a class="nav-item" onclick="markup('mark1')">
-      Turn On Topic Visualization
-    </a>
-    <a class="nav-item" onclick="unmarkup()">
-      Turn Off Topic Visualization
-    </a>
     <a class="nav-item" href="#why">
       Why Was This Recommended?
     </a>
@@ -72,12 +66,50 @@
 	<div class="columns">
 	<div class="column">
 		<p>
-		Currently this poetry engine uses a topic modeling algorithm called latent dirichlet allocation (LDA) which sorts each poem into a set of topics based on their vocabulary. For each poem I look for another poem with the most similar topics. I also make sure that the poems look similar -- that they have a (relatively) similar number of lines and words per line. So your recommended poem has similar topics to your selected poem and visually looks about the same. 
+		Currently this poetry engine looks a set of features about the poems and chooses a poem with the most similar set of features. Below you can see the features of each poem. Right now "most similar" is a simple Euclidean distance. Further work includes adding more sophisticated features and determining similarity differently. I talk about the features and similarity metric more on the <a href="../howitworks">about</a> page.
 		</p>
 		<br />
-		<p>
-		I go into the algorithm more deeply on the <a href="../howitworks">about</a> page.
-		</p>
+		<table class="table">
+  <thead>
+    <tr>
+      <th>Feature</th>
+      <th><%= @poem[:title] %></th>
+      <th><%= @rec_poem[:title] %></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>NumLines</th>
+      <td><%= @poem[:num_lines] %></td>
+      <td><%= @rec_poem[:num_lines] %></td>
+    </tr>
+    <tr>
+      <th>NumWords</th>
+      <td><%= @poem[:num_words] %></td>
+      <td><%= @rec_poem[:num_words] %></td>
+    </tr>
+    <tr>
+      <th>WidthInChar</th>
+      <td><%= '%.2f' % @poem[:width_in_char] %></td>
+      <td><%= '%.2f' % @rec_poem[:width_in_char] %></td>
+    </tr>
+    <tr>
+      <th>AvgWordSize</th>
+      <td><%= '%.2f' % @poem[:word_size] %></td>
+      <td><%= '%.2f' % @rec_poem[:word_size] %></td>
+    </tr>
+    <tr>
+      <th>RepetitionScore</th>
+      <td><%= '%.2f' % @poem[:repetition_score] %></td>
+      <td><%= '%.2f' % @rec_poem[:repetition_score] %></td>
+    </tr>
+    <tr>
+      <th>ObscurityScore</th>
+      <td><%= '%.2f' % @poem[:obscurity_score] %></td>
+      <td><%= '%.2f' % @rec_poem[:obscurity_score] %></td>
+    </tr>
+  </tbody>
+</table>
 	</div>
 	<div class="column">
 		<p></p>
